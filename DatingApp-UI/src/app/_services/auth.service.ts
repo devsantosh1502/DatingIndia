@@ -15,9 +15,13 @@ export class AuthService {
         debugger;
         const user = response;
         if (user) {
-          localStorage.setItem('token',user.token);
+          localStorage.setItem("token", user.token);
         }
       })
     );
+  }
+
+  register(model: any) {
+    return this._http.post(this.baseUrl + "register", model);
   }
 }
