@@ -12,7 +12,9 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.EntityFrameworkCore;
-
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 namespace DatingApp.API
 {
@@ -30,6 +32,25 @@ namespace DatingApp.API
         {
             services.AddDbContext<DataContext>(x => x.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
             services.AddScoped<IAuthRepository, AuthRepository>();
+            services.AddAuthentication(auth =>
+            {
+                auth.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                auth.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+
+            }).AddJwtBearer(auth =>
+            {
+                auth.TokenValidationParameters = new TokenValidationParameters()
+                {
+                    ValidateIssuer = true,
+                    ValidIssuer = Configuration["AuthSettings:Issuer"],
+                    ValidateAudience = true,
+                    ValidAudience = Configuration["AuthSettings:Audience"],
+                    RequireExpirationTime = true,
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["AuthSettings:Key"])),
+                    ValidateIssuerSigningKey = true
+
+                };
+            });
             services.AddCors(options =>
        {
            options.AddPolicy("AllowAnyOrigin",
@@ -38,6 +59,7 @@ namespace DatingApp.API
                .AllowAnyMethod()
                .AllowAnyHeader());
        });
+
             services.AddControllers();
 
         }
@@ -53,8 +75,9 @@ namespace DatingApp.API
             app.UseHttpsRedirection();
 
             app.UseRouting();
-
-            // app.UseAuthorization();
+            
+            app.UseAuthentication();
+            app.UseAuthorization();
             // app.UseCors(x => x.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
             app.UseEndpoints(endpoints =>
             {
