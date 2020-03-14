@@ -11,7 +11,7 @@
   },
   "private": true,
   "dependencies": {
-    "@angular/animations": "~9.0.2",
+    "@angular/animations": "^9.0.6",
     "@angular/common": "~9.0.2",
     "@angular/compiler": "~9.0.2",
     "@angular/core": "~9.0.2",
@@ -23,7 +23,7 @@
     "alertifyjs": "^1.13.1",
     "bootstrap": "^4.4.1",
     "font-awesome": "^4.7.0",
-    "ngx-bootstrap": "^3.0.1",
+    "ngx-bootstrap": "^3.3.0",
     "rxjs": "~6.5.4",
     "tslib": "^1.10.0",
     "zone.js": "~0.10.2"
