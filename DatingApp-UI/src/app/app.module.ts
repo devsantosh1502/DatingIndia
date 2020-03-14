@@ -13,6 +13,8 @@ import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { HomeComponent } from './home/home.component';
 import { RegisterComponent } from './register/register.component';
 import { ErrorInterceptProvider } from './_services/error.intercept';
+import { MemberListComponent } from './member-list/member-list.component';
+import { AuthGuard } from './_guards/auth.guard';
 
 
 @NgModule({
@@ -20,7 +22,8 @@ import { ErrorInterceptProvider } from './_services/error.intercept';
       AppComponent,
       NavComponent,
       HomeComponent,
-      RegisterComponent
+      RegisterComponent,
+      MemberListComponent
    ],
    imports: [
       BrowserModule,
@@ -31,7 +34,8 @@ import { ErrorInterceptProvider } from './_services/error.intercept';
       BsDropdownModule.forRoot()
    ],
    providers: [
-      ErrorInterceptProvider
+      ErrorInterceptProvider,
+      AuthGuard
    ],
    bootstrap: [
       AppComponent
